@@ -11,6 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
         fetchImages(newsId);
         fetchComments(newsId);
         document.getElementById('comment-form').addEventListener('submit', addComment);
+        document.getElementById('add-image-form').addEventListener('submit', addImage);
         setupSliderControls();
     } else {
         alert('No news ID provided.');
@@ -29,10 +30,10 @@ function renderNewsDetail(news) {
     const newsDetail = document.getElementById('news-detail');
     newsDetail.innerHTML = `
         <h2>${news.title}</h2>
-        <p><img src="${news.avatar}}"></p>
+        <p>${news.avatar}</p>
         <p>By ${news.author}</p>
-        <p>${news.description}</p>
         <p><a href="${news.url}" target="_blank">Read more</a></p>
+        <p>Description: ${news.description}</p>
     `;
 }
 
@@ -53,8 +54,19 @@ function renderImageSlider() {
         const slide = document.createElement('div');
         slide.classList.add('slide');
         if (index === 0) slide.classList.add('active');
-        slide.innerHTML = `<img src="${img.image}" alt="Image ${index + 1}">`;
+        slide.innerHTML = `
+            <img src="${img.image}" alt="Image ${index + 1}">
+            <button class="delete-image-btn" data-image-id="${img.id}">✖️</button>
+        `;
         slidesContainer.appendChild(slide);
+    });
+
+    // Attach event listeners to delete buttons
+    document.querySelectorAll('.delete-image-btn').forEach(button => {
+        button.addEventListener('click', (e) => {
+            const imageId = e.target.getAttribute('data-image-id');
+            deleteImage(imageId);
+        });
     });
 }
 
@@ -69,6 +81,8 @@ function setupSliderControls() {
 
 function changeSlide(direction) {
     const slides = document.querySelectorAll('.slide');
+    if (slides.length === 0) return;
+
     slides[currentSlide].classList.remove('active');
     currentSlide = (currentSlide + direction + slides.length) % slides.length;
     slides[currentSlide].classList.add('active');
@@ -89,9 +103,8 @@ function renderComments(comments) {
         commentDiv.classList.add('comment-item');
         commentDiv.dataset.commentId = comment.id;
         commentDiv.innerHTML = `
-            
+            <img src="${comment.avatar}" alt="${comment.name}" class="avatar">
             <div>
-                <p><img src='${comment.avatar}' width='60px'; style='border-radius: 50%'></p>
                 <p><strong>${comment.name}</strong></p>
                 <p>${comment.comment}</p>
                 <button class="edit-comment">Edit</button>
@@ -100,7 +113,7 @@ function renderComments(comments) {
         `;
         commentsList.appendChild(commentDiv);
 
-        // Edit and Delete functionality
+   
         commentDiv.querySelector('.edit-comment').addEventListener('click', () => editComment(comment));
         commentDiv.querySelector('.delete-comment').addEventListener('click', () => deleteComment(comment.id));
     });
@@ -115,11 +128,9 @@ function addComment(event) {
         const newComment = {
             newsId: newsId,
             name: name,
-            avatar: 'https://gravatar.com/avatar/1c8e8a6e8d1fe52b782b280909abeb38?s=400&d=robohash&r=x', // Placeholder avatar
+            avatar: 'https://gravatar.com/avatar/ab556f09fef2b920ed262386b7a4ffaa?s=400&d=robohash&r=x', 
             comment: commentText
         };
-
-        console.log('Adding comment:', newComment);
 
         fetch(`${apiBaseUrl}/news/${newsId}/comments`, {
             method: 'POST',
@@ -137,11 +148,11 @@ function addComment(event) {
 
 function editComment(comment) {
     const newCommentText = prompt('Edit your comment:', comment.comment);
-    if (newCommentText !== null) {
+    if (newCommentText !== null && newCommentText.trim() !== '') {
         fetch(`${apiBaseUrl}/news/${newsId}/comments/${comment.id}`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ ...comment, comment: newCommentText })
+            body: JSON.stringify({ ...comment, comment: newCommentText.trim() })
         })
             .then(response => response.json())
             .then(data => fetchComments(newsId))
@@ -156,5 +167,53 @@ function deleteComment(commentId) {
         })
             .then(() => fetchComments(newsId))
             .catch(error => console.error('Error deleting comment:', error));
+    }
+}
+
+// Add Image Functionality
+function addImage(event) {
+    event.preventDefault();
+    const imageFileInput = document.getElementById('image-file');
+    const file = imageFileInput.files[0];
+
+    if (file) {
+       //base 65
+        const reader = new FileReader();
+        reader.onloadend = () => {
+            const imageData = reader.result; 
+            const newImage = {
+                newsId: newsId,
+                image: imageData
+            };
+
+            fetch(`${apiBaseUrl}/news/${newsId}/images`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(newImage)
+            })
+                .then(response => response.json())
+                .then(data => {
+                    fetchImages(newsId);
+                    document.getElementById('add-image-form').reset();
+                })
+                .catch(error => console.error('Error adding image:', error));
+        };
+        reader.readAsDataURL(file);
+    }
+}
+
+// Delete Image Functionality
+function deleteImage(imageId) {
+    if (confirm('Are you sure you want to delete this image?')) {
+        fetch(`${apiBaseUrl}/news/${newsId}/images/${imageId}`, {
+            method: 'DELETE'
+        })
+            .then(() => {
+                if (currentSlide >= images.length - 1) {
+                    currentSlide = images.length - 2 >= 0 ? images.length - 2 : 0;
+                }
+                fetchImages(newsId);
+            })
+            .catch(error => console.error('Error deleting image:', error));
     }
 }

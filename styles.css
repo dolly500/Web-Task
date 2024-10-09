@@ -91,6 +91,7 @@ main {
 .slides-container {
     display: flex;
     transition: transform 0.5s ease-in-out;
+    width: 30vw;
 }
 
 .slide {
@@ -107,6 +108,31 @@ main {
     width: 100%;
     height: auto;
 }
+
+/* Add Image Form Styles */
+#add-image-section {
+    max-width: 600px;
+    margin: 2em auto;
+}
+
+#add-image-section h2 {
+    margin-bottom: 0.5em;
+}
+
+#add-image-form {
+    display: flex;
+    flex-direction: column;
+}
+
+#add-image-form input[type="file"] {
+    margin-bottom: 0.5em;
+}
+
+#add-image-form button {
+    padding: 0.5em;
+    cursor: pointer;
+}
+
 
 /* Comments Styles */
 #comments-section {
@@ -189,4 +215,36 @@ form input {
 form button {
     padding: 0.7em;
     cursor: pointer;
+}
+
+/* Responsive Styles */
+@media (max-width: 600px) {
+    header, main {
+        padding: 0.5em;
+    }
+
+    .pagination {
+        flex-direction: column;
+    }
+
+    .pagination button {
+        margin: 0.5em 0;
+    }
+
+    .comment-item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .comment-item .avatar {
+        margin-bottom: 0.5em;
+    }
+
+    /* Adjust Delete Image Button Size on Mobile */
+    .delete-image-btn {
+        top: 5px;
+        right: 5px;
+        padding: 0.2em 0.5em;
+        font-size: 0.8em;
+    }
 }
