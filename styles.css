@@ -1,0 +1,192 @@
+/* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background-color: #333;
+    color: #fff;
+    padding: 1em;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header h1 {
+    margin: 0;
+}
+
+header nav a {
+    color: #fff;
+    text-decoration: none;
+    margin-left: 1em;
+}
+
+main {
+    padding: 1em;
+}
+
+.news-item {
+    border-bottom: 1px solid #ccc;
+    padding: 1em 0;
+}
+
+.news-item h2 {
+    margin: 0 0 0.5em 0;
+}
+
+.news-item a {
+    text-decoration: none;
+    color: #333;
+}
+
+.news-item a:hover {
+    text-decoration: underline;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 1em;
+}
+
+.pagination button {
+    padding: 0.5em 1em;
+    margin: 0 1em;
+    cursor: pointer;
+}
+
+.pagination button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Responsive Styles */
+@media (max-width: 600px) {
+    header, main {
+        padding: 0.5em;
+    }
+
+    .pagination {
+        flex-direction: column;
+    }
+
+    .pagination button {
+        margin: 0.5em 0;
+    }
+}
+
+
+/* Slider Styles */
+.slider {
+    position: relative;
+    max-width: 600px;
+    margin: 2em auto;
+    overflow: hidden;
+}
+
+.slides-container {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+}
+
+.slide {
+    min-width: 100%;
+    box-sizing: border-box;
+    display: none;
+}
+
+.slide.active {
+    display: block;
+}
+
+.slide img {
+    width: 100%;
+    height: auto;
+}
+
+/* Comments Styles */
+#comments-section {
+    max-width: 600px;
+    margin: 2em auto;
+}
+
+.comment-item {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 1em;
+}
+
+.comment-item .avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 1em;
+}
+
+.comment-item div {
+    flex: 1;
+}
+
+.comment-item button {
+    margin-right: 0.5em;
+    padding: 0.3em 0.6em;
+    cursor: pointer;
+}
+
+#comment-form {
+    display: flex;
+    flex-direction: column;
+}
+
+#comment-form input, #comment-form textarea {
+    padding: 0.5em;
+    margin-bottom: 0.5em;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+#comment-form button {
+    padding: 0.5em;
+    cursor: pointer;
+}
+
+/* Responsive Styles */
+@media (max-width: 600px) {
+    .comment-item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .comment-item .avatar {
+        margin-bottom: 0.5em;
+    }
+}
+
+
+/* Form Styles */
+form {
+    max-width: 600px;
+    margin: 2em auto;
+    display: flex;
+    flex-direction: column;
+}
+
+form label {
+    margin-bottom: 1em;
+}
+
+form input {
+    width: 100%;
+    padding: 0.5em;
+    margin-top: 0.5em;
+    box-sizing: border-box;
+}
+
+form button {
+    padding: 0.7em;
+    cursor: pointer;
+}

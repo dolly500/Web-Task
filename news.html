@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>News App - News Detail</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>News Detail</h1>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="create.html">Create News</a>
+        </nav>
+    </header>
+    <main>
+        <div id="news-detail"></div>
+        <section id="image-slider" class="slider">
+            <button class="prev">&lt;</button>
+            <div class="slides-container"></div>
+            <button class="next">&gt;</button>
+        </section>
+        <section id="comments-section">
+            <h2>Comments</h2>
+            <div id="comments-list"></div>
+            <form id="comment-form">
+                <input type="text" id="comment-name" placeholder="Your Name" required>
+                <textarea id="comment-text" placeholder="Your Comment" required></textarea>
+                <button type="submit">Add Comment</button>
+            </form>
+        </section>
+    </main>
+    <script src="scripts/news.js"></script>
+</body>
+</html>
