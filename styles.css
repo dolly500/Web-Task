@@ -98,7 +98,7 @@ main {
 
 .news-item:hover {
     transform: translateY(-5px);
-    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
+    box-shadow: rgba(0, 0, 0, 0.15);
 }
 
 .news-item img {
@@ -146,7 +146,7 @@ main {
 }
 
 .pagination button:hover:not(:disabled) {
-    background-color: darken(var(--primary-color), 10%);
+    background-color: darken(var(--primary-color), 30%);
     transform: translateY(-2px);
 }
 
@@ -226,7 +226,7 @@ main {
 }
 
 #add-image-form button:hover {
-    background-color: darken(var(--accent-color), 10%);
+    background-color: darken(var(--accent-color), 50%);
     transform: translateY(-2px);
 }
 
@@ -303,7 +303,7 @@ main {
 }
 
 .comment-item button:hover {
-    background-color: darken(var(--accent-color), 10%);
+    background-color: darken(var(--accent-color), 50%);
     transform: translateY(-2px);
 }
 
@@ -340,7 +340,7 @@ main {
 }
 
 #comment-form button:hover {
-    background-color: darken(var(--primary-color), 10%);
+    background-color: darken(var(--primary-color), 50%);
     transform: translateY(-2px);
 }
 
@@ -383,7 +383,7 @@ form#news-form button {
 }
 
 form#news-form button:hover {
-    background-color: darken(var(--accent-color), 10%);
+    background-color: darken(var(--accent-color), 50%);
     transform: translateY(-2px);
 }
 
@@ -488,7 +488,7 @@ form#news-form button:hover {
 }
 
 .btn-primary:hover {
-    background-color: darken(var(--primary-color), 10%);
+    background-color: darken(var(--primary-color), 50%);
     transform: translateY(-2px);
 }
 
@@ -498,6 +498,6 @@ form#news-form button:hover {
 }
 
 .btn-accent:hover {
-    background-color: darken(var(--accent-color), 10%);
+    background-color: darken(var(--accent-color), 50%);
     transform: translateY(-2px);
 }
