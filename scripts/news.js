@@ -42,6 +42,7 @@ function fetchImages(id) {
         .then(response => response.json())
         .then(data => {
             images = data;
+            currentSlide = 0;
             renderImageSlider();
         })
         .catch(error => console.error('Error fetching images:', error));
@@ -50,6 +51,12 @@ function fetchImages(id) {
 function renderImageSlider() {
     const slidesContainer = document.querySelector('.slides-container');
     slidesContainer.innerHTML = '';
+
+    if (images.length === 0) {
+        slidesContainer.innerHTML = '<p class="no-images">No images available.</p>';
+        return;
+    }
+
     images.forEach((img, index) => {
         const slide = document.createElement('div');
         slide.classList.add('slide');
@@ -61,12 +68,21 @@ function renderImageSlider() {
         slidesContainer.appendChild(slide);
     });
 
+    updateSlideDisplay();
+
     // Attach event listeners to delete buttons
     document.querySelectorAll('.delete-image-btn').forEach(button => {
         button.addEventListener('click', (e) => {
             const imageId = e.target.getAttribute('data-image-id');
             deleteImage(imageId);
         });
+    });
+}
+
+function updateSlideDisplay() {
+    const slides = document.querySelectorAll('.slide');
+    slides.forEach((slide, index) => {
+        slide.classList.toggle('active', index === currentSlide);
     });
 }
 
@@ -80,12 +96,10 @@ function setupSliderControls() {
 }
 
 function changeSlide(direction) {
-    const slides = document.querySelectorAll('.slide');
-    if (slides.length === 0) return;
+    if (images.length === 0) return;
 
-    slides[currentSlide].classList.remove('active');
-    currentSlide = (currentSlide + direction + slides.length) % slides.length;
-    slides[currentSlide].classList.add('active');
+    currentSlide = (currentSlide + direction + images.length) % images.length;
+    updateSlideDisplay();
 }
 
 function fetchComments(id) {
@@ -177,7 +191,7 @@ function addImage(event) {
     const file = imageFileInput.files[0];
 
     if (file) {
-       //base 65
+        //base 64
         const reader = new FileReader();
         reader.onloadend = () => {
             const imageData = reader.result; 
@@ -191,16 +205,32 @@ function addImage(event) {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(newImage)
             })
-                .then(response => response.json())
-                .then(data => {
-                    fetchImages(newsId);
-                    document.getElementById('add-image-form').reset();
-                })
-                .catch(error => console.error('Error adding image:', error));
+            .then(response => response.json())
+            .then(data => {
+                fetchImages(newsId);
+                document.getElementById('add-image-form').reset();
+                
+                // Show success message
+                displaySuccessMessage('Image added successfully!');
+            })
+            .catch(error => console.error('Error adding image:', error));
         };
         reader.readAsDataURL(file);
     }
 }
+
+// Function to display success message
+function displaySuccessMessage(message) {
+    const messageContainer = document.getElementById('success-message');
+    messageContainer.textContent = message;
+    messageContainer.style.display = 'block';
+
+    // Hide the message after 3 seconds
+    setTimeout(() => {
+        messageContainer.style.display = 'none';
+    }, 3000);
+}
+
 
 // Delete Image Functionality
 function deleteImage(imageId) {
